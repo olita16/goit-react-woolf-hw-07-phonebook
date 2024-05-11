@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { useSelector, useDispatch } from 'react-redux';
-import { getVisibleContacts } from '../../redux/selectors';
-import { addContact } from '../../redux/contactsSlice';
+import { selectVisibleContacts } from '../../redux/selectors';
+import { addContacts } from '../../redux/operations';
 import css from './ContactForm.module.css';
 
 const nameInputId = nanoid();
@@ -13,7 +13,7 @@ const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const contacts = useSelector(getVisibleContacts);
+  const contacts = useSelector(selectVisibleContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = event => {
@@ -24,10 +24,17 @@ const ContactForm = () => {
     );
 
     if (isInContacts) {
-      return Notify.info(`${name} is already in contacts`);
+      return Notify.warning(`${name} is already in contacts`);
     }
+    dispatch(addContacts({ name, number }))
+      .unwrap()
+      .then(() => {
+        Notify.success(`New contact added`);
+      })
+      .catch(() => {
+        Notify.failure(`OOPS...`);
+      });
 
-    dispatch(addContact({ name, number }));
     setName('');
     setNumber('');
   };
@@ -46,6 +53,7 @@ const ContactForm = () => {
         return;
     }
   };
+
   return (
     <div>
       <form className={css.contactForm} onSubmit={handleSubmit}>
