@@ -2,7 +2,7 @@
   "name": "react-homework-template",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://olita16.github.io/goit-react-woolf-hw-06-phonebook/",
+  "homepage": "https://olita16.github.io/goit-react-woolf-hw-07-phonebook/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.4",
     "@testing-library/jest-dom": "^5.16.3",
